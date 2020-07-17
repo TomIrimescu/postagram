@@ -1,34 +1,41 @@
 {
-	"api": {
-		"Postagram": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "API_KEY",
-						"apiKeyConfig": {
-							"description": "public",
-							"apiKeyExpirationDays": "365"
-						}
-					}
-				}
-			}
-		}
-	},
-	"auth": {
-		"postagramaf6db2f5": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [],
-			"customAuth": false
-		}
-	},
-	"storage": {
-		"images": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+    "api": {
+        "Postagram": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [
+                        {
+                            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                            "userPoolConfig": {
+                                "userPoolId": "authpostagramaf6db2f5"
+                            }
+                        }
+                    ],
+                    "defaultAuthentication": {
+                        "authenticationType": "API_KEY",
+                        "apiKeyConfig": {
+                            "description": "public",
+                            "apiKeyExpirationDays": "365"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "auth": {
+        "postagramaf6db2f5": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "dependsOn": [],
+            "customAuth": false
+        }
+    },
+    "storage": {
+        "images": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation"
+        }
+    }
 }
