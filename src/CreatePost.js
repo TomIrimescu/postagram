@@ -30,8 +30,8 @@ export default function CreatePost({
   /* 3. onChangeFile hanlder will be fired when a user uploads a file  */
   function onChangeFile(e) {
     e.persist();
-    if (! e.target.files[0]) return;
-    const image = { fileInfo: e.target.files[0], name: `${e.target.files[0].name}_${uuid()}`}
+    if (!e.target.files[0]) return;
+    const image = { fileInfo: e.target.files[0], name: `${e.target.files[0].name}_${uuid()}` }
     updateFormState(currentState => ({ ...currentState, file: URL.createObjectURL(e.target.files[0]), image }))
   }
 
@@ -46,7 +46,7 @@ export default function CreatePost({
 
       await Storage.put(formState.image.name, formState.image.fileInfo);
       await API.graphql({
-        query: createPost, 
+        query: createPost,
         variables: { input: postInfo },
         authMode: 'AMAZON_COGNITO_USER_POOLS'
       }); // updated
@@ -79,14 +79,14 @@ export default function CreatePost({
         className={inputStyle}
         onChange={onChangeText}
       />
-      <input 
+      <input
         type="file"
         onChange={onChangeFile}
       />
-      { formState.file && <img className={imageStyle} alt="preview" src={formState.file} /> }
+      {formState.file && <img className={imageStyle} alt="preview" src={formState.file} />}
       <Button title="Create New Post" onClick={save} />
       <Button type="cancel" title="Cancel" onClick={() => updateOverlayVisibility(false)} />
-      { formState.saving && <p className={savingMessageStyle}>Saving post...</p> }
+      {formState.saving && <p className={savingMessageStyle}>Saving post...</p>}
     </div>
   )
 }
@@ -99,13 +99,11 @@ const inputStyle = css`
   font-size: 16px;
   border-radius: 4px;
 `
-
 const imageStyle = css`
   height: 120px;
   margin: 10px 0px;
   object-fit: contain;
 `
-
 const containerStyle = css`
   display: flex;
   flex-direction: column;
@@ -122,7 +120,6 @@ const containerStyle = css`
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.125rem 0.25rem;
   padding: 20px;
 `
-
 const savingMessageStyle = css`
   margin-bottom: 0px;
 `

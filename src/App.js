@@ -8,7 +8,6 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react';
 import { css } from 'emotion';
 import { API, Storage, Auth } from 'aws-amplify';
 import { listPosts } from './graphql/queries';
-
 import Posts from './Posts';
 import Post from './Post';
 import Header from './Header';
@@ -23,11 +22,11 @@ function Router() {
 
   /* fetch posts when component loads */
   useEffect(() => {
-      fetchPosts();
+    fetchPosts();
   }, []);
   async function fetchPosts() {
     /* query the API, ask for 100 items */
-    let postData = await API.graphql({ query: listPosts, variables: { limit: 100 }});
+    let postData = await API.graphql({ query: listPosts, variables: { limit: 100 } });
     let postsArray = postData.data.listPosts.items;
     /* map over the image keys in the posts array, get signed image URLs for each image */
     postsArray = await Promise.all(postsArray.map(async post => {
@@ -38,6 +37,7 @@ function Router() {
     /* update the posts array in the local state */
     setPostState(postsArray);
   }
+
   async function setPostState(postsArray) {
     const user = await Auth.currentAuthenticatedUser();
     const myPostData = postsArray.filter(p => p.owner === user.username);
@@ -47,31 +47,32 @@ function Router() {
   return (
     <>
       <HashRouter>
-          <div className={contentStyle}>
-            <Header />
-            <hr className={dividerStyle} />
-            <Button title="New Post" onClick={() => updateOverlayVisibility(true)} />
-            <Switch>
-              <Route exact path="/" >
-                <Posts posts={posts} />
-              </Route>
-              <Route path="/post/:id" >
-                <Post />
-              </Route>
-              <Route exact path="/myposts" >
-                <Posts posts={myPosts} />
-              </Route>
-            </Switch>
-          </div>
-          <AmplifySignOut />
-        </HashRouter>
-        { showOverlay && (
-          <CreatePost
-            updateOverlayVisibility={updateOverlayVisibility}
-            updatePosts={setPostState}
-            posts={posts}
-          />
-        )}
+        <div className={contentStyle}>
+          <Header />
+          <hr className={dividerStyle} />
+          <Button title="New Post" onClick={() => updateOverlayVisibility(true)} />
+          <hr className={dividerStyle} />
+          <Switch>
+            <Route exact path="/" >
+              <Posts posts={posts} />
+            </Route>
+            <Route path="/post/:id" >
+              <Post />
+            </Route>
+            <Route exact path="/myposts" >
+              <Posts posts={myPosts} />
+            </Route>
+          </Switch>
+        </div>
+        <AmplifySignOut />
+      </HashRouter>
+      {showOverlay && (
+        <CreatePost
+          updateOverlayVisibility={updateOverlayVisibility}
+          updatePosts={setPostState}
+          posts={posts}
+        />
+      )}
     </>
   );
 }
@@ -79,10 +80,8 @@ function Router() {
 const dividerStyle = css`
   margin-top: 15px;
 `
-
 const contentStyle = css`
   min-height: calc(100vh - 45px);
   padding: 0px 40px;
 `
-
 export default withAuthenticator(Router);

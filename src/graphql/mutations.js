@@ -15,6 +15,16 @@ export const createPost = /* GraphQL */ `
       owner
       createdAt
       updatedAt
+      comments {
+        items {
+          id
+          message
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -32,6 +42,16 @@ export const updatePost = /* GraphQL */ `
       owner
       createdAt
       updatedAt
+      comments {
+        items {
+          id
+          message
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -46,6 +66,58 @@ export const deletePost = /* GraphQL */ `
       location
       description
       image
+      owner
+      createdAt
+      updatedAt
+      comments {
+        items {
+          id
+          message
+          owner
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      message
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      message
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      message
       owner
       createdAt
       updatedAt
